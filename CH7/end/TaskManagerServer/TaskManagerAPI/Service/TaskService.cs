@@ -18,7 +18,7 @@ namespace TaskManagerAPI.Service
         {
             UserTask task = await _tasksRepository.SelectTask(id);
 
-            UserTaskDto response = new UserTaskDto()
+            UserTaskDto response = new UserTaskDto
             {
                 Id = task.Id,
                 Name = task.Name,
@@ -31,7 +31,7 @@ namespace TaskManagerAPI.Service
 
         public async Task<UserTaskDto> CreateTask(UserTaskDto newTask)
         {
-            UserTask taskToBeCreated = new UserTask()
+            UserTask taskToBeCreated = new UserTask
             {
                 Name = newTask.Name,
                 UserId = 1,
@@ -43,7 +43,7 @@ namespace TaskManagerAPI.Service
 
             UserTask task = await _tasksRepository.CreateTask(taskToBeCreated);
 
-            UserTaskDto response = new UserTaskDto()
+            UserTaskDto response = new UserTaskDto
             {
                 Id = task.Id,
                 Name = task.Name,
@@ -56,7 +56,7 @@ namespace TaskManagerAPI.Service
 
         public async Task<UserTaskDto> UpdateTask(UserTaskDto taskToBeUpdated)
         {
-            UserTask task = new UserTask()
+            UserTask task = new UserTask
             {
                 Id = taskToBeUpdated.Id,
                 Name = taskToBeUpdated.Name,
@@ -67,7 +67,7 @@ namespace TaskManagerAPI.Service
 
             UserTask updatedTask = await _tasksRepository.UpdateTask(task);
 
-            UserTaskDto response = new UserTaskDto()
+            UserTaskDto response = new UserTaskDto
             {
                 Id = updatedTask.Id,
                 Name = updatedTask.Name,
