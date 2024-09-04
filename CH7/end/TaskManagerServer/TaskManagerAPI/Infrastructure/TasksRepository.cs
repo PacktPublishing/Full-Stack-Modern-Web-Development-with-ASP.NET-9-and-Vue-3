@@ -21,13 +21,14 @@ namespace TaskManagerAPI.Infrastructure
             {
                 UserTask? result = await _dbContext.UserTasks.Where(task => task.Id == taskId).FirstOrDefaultAsync();
 
-                if (result != null) return result;
+                if (result is not null)
+                    return result;
 
                 throw new Exception($"Task with ID {taskId} was not found.");
             }
             catch(Exception e)
             {
-                throw new Exception($"Error getting task with ID {taskId}: " + e.Message);
+                throw new Exception($"Error getting task with ID {taskId}", e);
             }
         }
 
@@ -43,7 +44,7 @@ namespace TaskManagerAPI.Infrastructure
             }
             catch (Exception e)
             {
-                throw new Exception("Error creating task: " + e.Message);
+                throw new Exception("Error creating task", e);
             }
         }
 
@@ -53,7 +54,7 @@ namespace TaskManagerAPI.Infrastructure
             {
                 UserTask? existingTask = await _dbContext.UserTasks.Where(task => task.Id == updatedTask.Id).FirstOrDefaultAsync();
 
-                if (existingTask != null)
+                if (existingTask is not null)
                 {
                     existingTask.Name = updatedTask.Name;
                     existingTask.UserId = updatedTask.UserId;
@@ -63,14 +64,12 @@ namespace TaskManagerAPI.Infrastructure
 
                     return existingTask;
                 }
-                else
-                {
-                    throw new Exception($"Task with ID {updatedTask.Id} not found.");
-                }
+
+                throw new Exception($"Task with ID {updatedTask.Id} not found.");
             }
             catch (Exception e)
             {
-                throw new Exception("Error updating task: " + e.Message);
+                throw new Exception("Error updating task", e);
             }
         }
 
@@ -79,9 +78,9 @@ namespace TaskManagerAPI.Infrastructure
         {
             try
             {
-                UserTask taskToDelete = await _dbContext.UserTasks.FindAsync(taskId);
+                UserTask? taskToDelete = await _dbContext.UserTasks.FindAsync(taskId);
 
-                if (taskToDelete != null)
+                if (taskToDelete is not null)
                 {
                     _dbContext.UserTasks.Remove(taskToDelete);
 
@@ -94,7 +93,7 @@ namespace TaskManagerAPI.Infrastructure
             }
             catch (Exception e)
             {
-                throw new Exception("Error deleting task: " + e.Message);
+                throw new Exception("Error deleting task", e);
             }
         }
     }
